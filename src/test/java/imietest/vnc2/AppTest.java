@@ -1,5 +1,6 @@
 package imietest.vnc2;
-// Modif de Marc Collin pour git 
+// Modif de Marc Collin pour git
+// Coorection de l'issue 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
