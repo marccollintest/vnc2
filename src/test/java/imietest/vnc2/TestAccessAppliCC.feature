@@ -9,7 +9,8 @@ Given Je suis sur la page de login
 	Then  La page affichée est la page de login
 	And  le message d'erreur est "mot de passe non valable"
 	And je ferme le navigateur
-
+ 
+ 
 Examples:
 |user|password|
 |testclient@imie.fr|rien|

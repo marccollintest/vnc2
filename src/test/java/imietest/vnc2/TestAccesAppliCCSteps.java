@@ -19,7 +19,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class TestAccesAppliCCSteps extends RootTest{
-
 	@Given("^un navigateur est démaré$")
 	public void un_navigateur_est_démaré() throws Throwable {
 	    driver = new FirefoxDriver();
@@ -56,12 +55,11 @@ public class TestAccesAppliCCSteps extends RootTest{
 		assertEquals(arg1, ((VncLoginPage)_currentPage).getMessageError());
 	}
 
-	
 
-@Then("^La page affichée est la page de login$")
-public void la_page_affichée_est_la_page_de_login() throws Throwable {
- assertEquals(VncLoginPage.TITLE,_currentPage.getTitle());
-}
 
+	@Then("^La page affichée est la page de login$")
+	public void la_page_affichée_est_la_page_de_login() throws Throwable {
+	 assertEquals(VncLoginPage.TITLE,_currentPage.getTitle());
+	}
 
 }
