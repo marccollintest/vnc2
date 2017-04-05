@@ -19,13 +19,13 @@ public class TestVncConnexion {
   public void setUp() throws Exception {
     driver = new FirefoxDriver();
     baseUrl = "http://localhost/";
-    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    driver.get(baseUrl + "/vinicom/index.php?controller=authentication");
+
   }
 
   @Test
   public void testVncConnexion() throws Exception {
-    // open | /vinicom/index.php?controller=authentication | 
-    driver.get(baseUrl + "/vinicom/index.php?controller=authentication");
     // type | id=email | testclient@imie.fr
     driver.findElement(By.id("email")).clear();
     driver.findElement(By.id("email")).sendKeys("testclient@imie.fr");
@@ -79,6 +79,44 @@ public class TestVncConnexion {
     driver.findElement(By.xpath("//body[@id='my-account']/table/tbody/tr[3]/td/div/div/div/ul/li[5]/a/span")).click();
   }
 
+  @Test
+  public void testVncConnexionPOD() throws Exception {
+	  
+	 VncLoginPage oLoginPage = new VncLoginPage(driver);
+	 oLoginPage.setUserName("testclient@imie.fr");
+	 oLoginPage.setPassword("rien");
+	 oLoginPage= (VncLoginPage)oLoginPage.clickOnConnect();
+    try {
+      assertEquals("mot de passe non valable", oLoginPage.getMessageError());
+    } catch (Error e) {
+      verificationErrors.append(e.toString());
+    }
+	 oLoginPage.setUserName("testclient@imie.fr");
+	 oLoginPage.setPassword("motdepasseinconnu");
+	 oLoginPage= (VncLoginPage)oLoginPage.clickOnConnect();
+   try {
+     assertEquals("Authentication failed.[testclient@imie.fr/motdepasseinconnu=>]", oLoginPage.getMessageError());
+   } catch (Error e) {
+     verificationErrors.append(e.toString());
+   }
+
+	 oLoginPage.setUserName("rien@imie.fr");
+	 oLoginPage.setPassword("rien@imie.fr");
+	 oLoginPage = (VncLoginPage)oLoginPage.clickOnConnect();
+ try {
+   assertEquals("Authentication failed.[rien@imie.fr/rien@imie.fr=>]", oLoginPage.getMessageError());
+ } catch (Error e) {
+   verificationErrors.append(e.toString());
+ }
+	 oLoginPage.setUserName("testclient@imie.fr");
+	 oLoginPage.setPassword("testclient@imie.fr");
+	 VncRootPage oPage = oLoginPage.clickOnConnect();
+
+	 // assertTitle | Mon compte - VINICOM | 
+    assertEquals(VncMenuPage.TITLE, oPage.getTitle());
+    oPage = ((VncMenuPage)oPage).clickOnDisconnect();
+    assertEquals(VncLoginPage.TITLE, oPage.getTitle());
+  }
   @After
   public void tearDown() throws Exception {
     driver.quit();
