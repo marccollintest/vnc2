@@ -83,6 +83,7 @@ public class TestVncConnexion {
   public void testVncConnexionPOD() throws Exception {
 	  
 	 VncLoginPage oLoginPage = new VncLoginPage(driver);
+
 	 oLoginPage.setUserName("testclient@imie.fr");
 	 oLoginPage.setPassword("rien");
 	 oLoginPage= (VncLoginPage)oLoginPage.clickOnConnect();
