@@ -29,11 +29,6 @@ public class TestVncConnexion {
   public void testVncConnexionPOD() throws Exception {
 	  
 	 VncLoginPage oLoginPage = new VncLoginPage(driver);
-	 // Test avec un mot de passe trop court
-	 oLoginPage.setUserName("testclient@imie.fr");
-	 oLoginPage.setPassword("rien");
-	 oLoginPage= (VncLoginPage)oLoginPage.clickOnConnect();
-      assertEquals("mot de passe non valable", oLoginPage.getMessageError());
 
       // Test avec un mot de passe inconnu
       oLoginPage.setUserName("testclient@imie.fr");
@@ -41,12 +36,12 @@ public class TestVncConnexion {
 	 oLoginPage= (VncLoginPage)oLoginPage.clickOnConnect();
      assertEquals("Authentication failed.[testclient@imie.fr/motdepasseinconnu=>]", oLoginPage.getMessageError());
 
-     // Test avec un user inconnu
+/*     // Test avec un user inconnu
 	 oLoginPage.setUserName("rien@imie.fr");
 	 oLoginPage.setPassword("rien@imie.fr");
 	 oLoginPage = (VncLoginPage)oLoginPage.clickOnConnect();
 	 assertEquals("Authentication failed.[rien@imie.fr/rien@imie.fr=>]", oLoginPage.getMessageError());
-	 
+*/	 
 	 // test OK
 	 oLoginPage.setUserName("testclient@imie.fr");
 	 oLoginPage.setPassword("testclient@imie.fr");
