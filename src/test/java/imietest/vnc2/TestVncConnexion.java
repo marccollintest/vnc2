@@ -24,97 +24,36 @@ public class TestVncConnexion {
 
   }
 
-  @Test
-  public void testVncConnexion() throws Exception {
-    // type | id=email | testclient@imie.fr
-    driver.findElement(By.id("email")).clear();
-    driver.findElement(By.id("email")).sendKeys("testclient@imie.fr");
-    // type | id=passwd | rien
-    driver.findElement(By.id("passwd")).clear();
-    driver.findElement(By.id("passwd")).sendKeys("rien");
-    // click | id=SubmitLogin | 
-    driver.findElement(By.id("SubmitLogin")).click();
-    // verifyText | //li | mot de passe non valable
-    try {
-      assertEquals("mot de passe non valable", driver.findElement(By.xpath("//li")).getText());
-    } catch (Error e) {
-      verificationErrors.append(e.toString());
-    }
-    // type | id=passwd | motdepasseinconnu
-    driver.findElement(By.id("passwd")).clear();
-    driver.findElement(By.id("passwd")).sendKeys("motdepasseinconnu");
-    // click | id=SubmitLogin | 
-    driver.findElement(By.id("SubmitLogin")).click();
-    // verifyText | //li | Authentication failed.[testclient@imie.fr/motdepasseinconnu=>]
-    try {
-      assertEquals("Authentication failed.[testclient@imie.fr/motdepasseinconnu=>]", driver.findElement(By.xpath("//li")).getText());
-    } catch (Error e) {
-      verificationErrors.append(e.toString());
-    }
-    // type | id=email | rien@imie.fr
-    driver.findElement(By.id("email")).clear();
-    driver.findElement(By.id("email")).sendKeys("rien@imie.fr");
-    // type | id=passwd | rien@imie.fr
-    driver.findElement(By.id("passwd")).clear();
-    driver.findElement(By.id("passwd")).sendKeys("rien@imie.fr");
-    // click | id=SubmitLogin | 
-    driver.findElement(By.id("SubmitLogin")).click();
-    // verifyText | //li | Authentication failed.[rien@imie.fr/rien@imie.fr=>]
-    try {
-      assertEquals("Authentication failed.[rien@imie.fr/rien@imie.fr=>]", driver.findElement(By.xpath("//li")).getText());
-    } catch (Error e) {
-      verificationErrors.append(e.toString());
-    }
-    // type | id=email | testclient@imie.fr
-    driver.findElement(By.id("email")).clear();
-    driver.findElement(By.id("email")).sendKeys("testclient@imie.fr");
-    // type | id=passwd | testclient@imie.fr
-    driver.findElement(By.id("passwd")).clear();
-    driver.findElement(By.id("passwd")).sendKeys("testclient@imie.fr");
-    // click | id=SubmitLogin | 
-    driver.findElement(By.id("SubmitLogin")).click();
-    // assertTitle | Mon compte - VINICOM | 
-    assertEquals("Mon compte - VINICOM", driver.getTitle());
-    // click | //body[@id='my-account']/table/tbody/tr[3]/td/div/div/div/ul/li[5]/a/span | 
-    driver.findElement(By.xpath("//body[@id='my-account']/table/tbody/tr[3]/td/div/div/div/ul/li[5]/a/span")).click();
-  }
-
+ 
   @Test
   public void testVncConnexionPOD() throws Exception {
 	  
 	 VncLoginPage oLoginPage = new VncLoginPage(driver);
-
+	 // Test avec un mot de passe trop court
 	 oLoginPage.setUserName("testclient@imie.fr");
 	 oLoginPage.setPassword("rien");
 	 oLoginPage= (VncLoginPage)oLoginPage.clickOnConnect();
-    try {
       assertEquals("mot de passe non valable", oLoginPage.getMessageError());
-    } catch (Error e) {
-      verificationErrors.append(e.toString());
-    }
-	 oLoginPage.setUserName("testclient@imie.fr");
+
+      // Test avec un mot de passe inconnu
+      oLoginPage.setUserName("testclient@imie.fr");
 	 oLoginPage.setPassword("motdepasseinconnu");
 	 oLoginPage= (VncLoginPage)oLoginPage.clickOnConnect();
-   try {
      assertEquals("Authentication failed.[testclient@imie.fr/motdepasseinconnu=>]", oLoginPage.getMessageError());
-   } catch (Error e) {
-     verificationErrors.append(e.toString());
-   }
 
+     // Test avec un user inconnu
 	 oLoginPage.setUserName("rien@imie.fr");
 	 oLoginPage.setPassword("rien@imie.fr");
 	 oLoginPage = (VncLoginPage)oLoginPage.clickOnConnect();
- try {
-   assertEquals("Authentication failed.[rien@imie.fr/rien@imie.fr=>]", oLoginPage.getMessageError());
- } catch (Error e) {
-   verificationErrors.append(e.toString());
- }
+	 assertEquals("Authentication failed.[rien@imie.fr/rien@imie.fr=>]", oLoginPage.getMessageError());
+	 
+	 // test OK
 	 oLoginPage.setUserName("testclient@imie.fr");
 	 oLoginPage.setPassword("testclient@imie.fr");
 	 VncRootPage oPage = oLoginPage.clickOnConnect();
-
-	 // assertTitle | Mon compte - VINICOM | 
     assertEquals(VncMenuPage.TITLE, oPage.getTitle());
+    
+    // Déconnexion
     oPage = ((VncMenuPage)oPage).clickOnDisconnect();
     assertEquals(VncLoginPage.TITLE, oPage.getTitle());
   }
